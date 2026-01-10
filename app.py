@@ -59,6 +59,10 @@ class Contact(db.Model):
 def index():
     return render_template("index.html")
 
+@app.route("/o-nama")
+def about():
+    return render_template("about.html")
+
 # 🔹 Model za tečajeve
 class Course(db.Model):
     __tablename__ = 'course'

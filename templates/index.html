@@ -16,10 +16,18 @@
         Mjesto gdje znanje postaje tvoja supermoć.  
         Otkrij jezike, tehnologiju i vještine koje te vode prema boljoj verziji sebe.
     </p>
-    <a href="{{ url_for('courses') }}" 
-       class="btn btn-warning btn-lg text-dark fw-semibold shadow">
-        🚀 Pogledaj tečajeve
-    </a>
+
+    <!-- samo JEDAN set dugmadi -->
+    <div class="d-flex justify-content-center gap-3 flex-wrap">
+        <a href="{{ url_for('courses') }}" 
+           class="btn btn-warning btn-lg text-dark fw-semibold shadow">
+            🚀 Pogledaj tečajeve
+        </a>
+        <a href="{{ url_for('about') }}" 
+           class="btn btn-outline-light btn-lg fw-semibold shadow">
+            ℹ️ O nama
+        </a>
+    </div>
 </div>
 
 <!-- PROMO BLOK - Snaga Uma -->

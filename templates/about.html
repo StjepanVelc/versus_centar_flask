@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}O nama — Versus Centar{% endblock %}
+{% block content %}
+<div class="card shadow-sm p-4">
+  <h2 class="text-center mb-4" style="color:#005BAB;">O nama</h2>
+  <p class="lead text-secondary">
+    Ovo je privremeni tekst koji će biti zamijenjen službenim opisom centra.
+    Stranica je već pripremljena i spremna da primi konačni sadržaj čim ga dobiješ.
+  </p>
+
+  <hr>
+
+  <p>
+    <strong>Versus Centar</strong> je mjesto usmjereno na osobni razvoj,
+    edukaciju i praktično usvajanje znanja iz različitih područja. Naš cilj je
+    omogućiti svakome da kroz moderan pristup učenju ostvari svoj puni potencijal.
+  </p>
+
+  <p class="text-muted fst-italic">
+    (Čim stigne službeni tekst, zamijeni ovaj placeholder sadržajem koji pošalju.)
+  </p>
+
+  <div class="text-center mt-4">
+    <a href="{{ url_for('courses') }}" class="btn btn-primary px-4">Pogledaj tečajeve</a>
+  </div>
+</div>
+{% endblock %}
