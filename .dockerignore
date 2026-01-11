@@ -1,0 +1,10 @@
+venv/
+__pycache__/
+backup/
+.env
+.git
+.gitignore
+*.pyc
+.db
+instance/
+versus.db

@@ -19,11 +19,11 @@
 
     <!-- samo JEDAN set dugmadi -->
     <div class="d-flex justify-content-center gap-3 flex-wrap">
-        <a href="{{ url_for('courses') }}" 
+        <a href="{{ url_for('public.courses') }}" 
            class="btn btn-warning btn-lg text-dark fw-semibold shadow">
             🚀 Pogledaj tečajeve
         </a>
-        <a href="{{ url_for('about') }}" 
+        <a href="{{ url_for('public.about') }}" 
            class="btn btn-outline-light btn-lg fw-semibold shadow">
             ℹ️ O nama
         </a>
@@ -37,7 +37,7 @@
     Profesionalno vođene <strong>Gottman partnerske seanse</strong> – uživo ili online.
     Razvijte bolju komunikaciju i razumijevanje u vezi.
   </p>
-  <a href="{{ url_for('snaga_uma') }}" class="btn btn-outline-primary btn-sm">
+  <a href="{{ url_for('public.snaga_uma') }}" class="btn btn-outline-primary btn-sm">
     Saznaj više
   </a>
 </div>
@@ -63,18 +63,18 @@
 <div class="text-center mt-5 py-5 bg-white rounded-3 shadow-sm">
     <h2 class="text-primary fw-bold mb-3">Tvoje znanje. Tvoja budućnost.</h2>
     <p class="lead mb-4">Počni već danas – svaki veliki put počinje prvim korakom.</p>
-    <a href="{{ url_for('contact') }}" class="btn btn-primary btn-lg fw-semibold shadow">📩 Kontaktiraj nas</a>
+    <a href="{{ url_for('public.contact') }}" class="btn btn-primary btn-lg fw-semibold shadow">📩 Kontaktiraj nas</a>
 </div>
 
 <!-- LOGIN SEKCIJA -->
 <div class="text-center mt-5">
     <h4 class="fw-bold mb-3 text-secondary">Pristup sustavu</h4>
     <div class="d-flex justify-content-center gap-3">
-        <a href="{{ url_for('user_login') }}" 
+        <a href="{{ url_for('user.user_login') }}" 
            class="btn btn-outline-primary fw-semibold px-4 py-2">
             👤 Korisnička prijava
         </a>
-        <a href="{{ url_for('admin_login') }}" 
+        <a href="{{ url_for('auth.admin_login') }}" 
            class="btn btn-outline-danger fw-semibold px-4 py-2">
             🔐 Admin prijava
         </a>

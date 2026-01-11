@@ -7,7 +7,7 @@ app = Flask(__name__)
 app.config["MAIL_SERVER"] = "smtp.gmail.com"
 app.config["MAIL_PORT"] = 587
 app.config["MAIL_USE_TLS"] = True
-app.config["MAIL_USERNAME"] = "versus.centar@gmail.com"  # zamijeni svojim Gmailom
+app.config["MAIL_USERNAME"] = "versus.centar@gmail.com"  
 app.config["MAIL_PASSWORD"] = "vjfr bqib wbme dzlt"    # 16-znamenkasta app lozinka
 app.config["MAIL_DEFAULT_SENDER"] = ("Versus Centar", "versus.centar@gmail.com")
 

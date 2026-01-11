@@ -127,17 +127,17 @@
 
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav">
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}">Početna</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('courses') }}">Tečajevi</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('events') }}">Događaji</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('public.index') }}">Početna</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('public.courses') }}">Tečajevi</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('public.events') }}">Događaji</a></li>
 
                     {% if session.get('admin_logged') %}
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('add_event') }}">➕ Dodaj događaj</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.add_event') }}">➕ Dodaj događaj</a></li>
                     {% endif %}
 
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('contact') }}">Kontakt</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('user_login') }}">Prijava</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_login') }}">Admin</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('public.contact') }}">Kontakt</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('user.user_login') }}">Prijava</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.admin_login') }}">Admin</a></li>
                 </ul>
             </div>
         </div>
