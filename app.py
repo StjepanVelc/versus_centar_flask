@@ -1,14 +1,14 @@
-from flask import Flask, app
+from flask import Flask
 from dotenv import load_dotenv
 import os
 
 from extensions import db, mail
 from models import *
 
-# Blueprinti
 from routes.public import bp as public_bp
 from routes.auth import bp as auth_bp
 from routes.user import bp as user_bp
+
 
 def create_app():
     load_dotenv()
@@ -16,11 +16,16 @@ def create_app():
     app = Flask(__name__)
     app.secret_key = os.getenv("SECRET_KEY", "dev-key")
 
-    app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
+    database_url = os.environ.get("DATABASE_URL")
+    if not database_url:
+        raise RuntimeError("DATABASE_URL is not set")
+
+    app.config["SQLALCHEMY_DATABASE_URI"] = database_url
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
         "pool_pre_ping": True
     }
+
     app.config["MAIL_SERVER"] = os.getenv("MAIL_SERVER")
     app.config["MAIL_PORT"] = int(os.getenv("MAIL_PORT", 587))
     app.config["MAIL_USE_TLS"] = os.getenv("MAIL_USE_TLS") == "True"
@@ -44,4 +49,4 @@ def create_app():
 app = create_app()
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=os.getenv("FLASK_ENV") == "development")
