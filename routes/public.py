@@ -23,6 +23,3 @@ def events():
 def contact():
     return render_template("contact.html")
 
-@bp.route("/snaga_uma")
-def snaga_uma():
-    return render_template("snaga_uma.html")

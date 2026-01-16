@@ -20,10 +20,10 @@
 
           <a href="{{ url_for('auth.register_event', event_id=e.id) }}" class="btn btn-outline-primary btn-sm">📅 Prijavi se</a>
 
-          {% if session.get('admin_logged') %}
+          {% if session.get('auth.admin_logged') %}
             <div class="d-flex justify-content-between mt-3">
-              <a href="{{ url_for('edit_event', id=e.id) }}" class="btn btn-outline-warning btn-sm">✏️ Uredi</a>
-              <form action="{{ url_for('delete_event', id=e.id) }}" method="POST"
+              <a href="{{ url_for('auth.edit_event', id=e.id) }}" class="btn btn-outline-warning btn-sm">✏️ Uredi</a>
+              <form action="{{ url_for('auth.delete_event', id=e.id) }}" method="POST"
                     onsubmit="return confirm('Jesi li siguran da želiš obrisati ovaj događaj?')" style="display:inline;">
                 <button type="submit" class="btn btn-outline-danger btn-sm">🗑️ Obriši</button>
               </form>

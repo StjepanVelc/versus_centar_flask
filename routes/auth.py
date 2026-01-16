@@ -127,16 +127,16 @@ def edit_course(course_id):
 
     return render_template("edit_course.html", tecaj=tecaj)
 
-bp.route("/register_event/<int:event_id>")
+@bp.route("/register_event/<int:event_id>")
 def register_event(event_id):
     from models import Event
 
     dogadjaj = Event.query.get_or_404(event_id)
 
     flash(f"Uspješno ste se prijavili za događaj: {dogadjaj.naziv}", "success")
-    return redirect(url_for("auth.events"))
+    return redirect(url_for("public.events"))
 
-bp.route("/admin/messages")
+@bp.route("/admin/messages")
 def admin_messages():
     if not session.get("auth.admin_logged"):
         flash("Prijavi se kao admin za pristup ovoj stranici.", "warning")
