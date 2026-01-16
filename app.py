@@ -7,7 +7,7 @@ from models import *
 
 from routes.public import bp as public_bp
 from routes.auth import bp as auth_bp
-from routes.user import bp as user_bp
+
 
 
 def create_app():
@@ -37,7 +37,7 @@ def create_app():
 
     app.register_blueprint(public_bp)
     app.register_blueprint(auth_bp)
-    app.register_blueprint(user_bp)
+    
 
     with app.app_context():
         db.create_all()
