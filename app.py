@@ -17,14 +17,13 @@ def create_app():
     app.secret_key = os.getenv("SECRET_KEY", "dev-key")
 
     database_url = os.environ.get("DATABASE_URL")
-    if not database_url:
-        raise RuntimeError("DATABASE_URL is not set")
+
+    if database_url.startswith("postgres://"):
+        database_url = database_url.replace("postgres://", "postgresql+psycopg://", 1)
+    elif database_url.startswith("postgresql://"):
+        database_url = database_url.replace("postgresql://", "postgresql+psycopg://", 1)
 
     app.config["SQLALCHEMY_DATABASE_URI"] = database_url
-    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-    app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
-        "pool_pre_ping": True
-    }
 
     app.config["MAIL_SERVER"] = os.getenv("MAIL_SERVER")
     app.config["MAIL_PORT"] = int(os.getenv("MAIL_PORT", 587))
