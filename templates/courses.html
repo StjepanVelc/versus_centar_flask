@@ -4,9 +4,12 @@
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h2 class="text-primary">Popis tečajeva</h2>
-    <a href="/auth/add_course" class="btn btn-primary">
+
+    {% if session.get('auth.admin_logged') %}
+    <a href="{{ url_for('auth.add_course') }}" class="btn btn-primary">
         ➕ Dodaj novi tečaj
     </a>
+    {% endif %}
 </div>
 
 {% if courses %}
@@ -19,12 +22,20 @@
                     <p class="card-text">{{ c.opis }}</p>
                     <p class="fw-bold text-danger">{{ c.cijena }} KM</p>
 
+                    {% if session.get('auth.admin_logged') %}
                     <div class="d-flex justify-content-between">
-                        <a href="{{ url_for('auth.edit_course', id=c.id) }}" class="btn btn-outline-warning btn-sm">✏️ Uredi</a>
-                        <form action="{{ url_for('auth.delete_course', id=c.id) }}" method="POST" onsubmit="return confirm('Jesi li siguran da želiš obrisati ovaj tečaj?')" style="display:inline;">
-                            <button type="submit" class="btn btn-outline-danger btn-sm">🗑️ Obriši</button>
+                        <a href="{{ url_for('auth.edit_course', course_id=c.id) }}"
+                           class="btn btn-outline-warning btn-sm">✏️ Uredi</a>
+
+                        <form method="POST"
+                              action="{{ url_for('auth.delete_course', course_id=c.id) }}"
+                              onsubmit="return confirm('Jesi li siguran da želiš obrisati ovaj tečaj?')">
+                            <button type="submit"
+                                    class="btn btn-outline-danger btn-sm">🗑️ Obriši</button>
                         </form>
                     </div>
+                    {% endif %}
+
                 </div>
             </div>
         </div>

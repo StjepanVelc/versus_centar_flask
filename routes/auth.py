@@ -41,7 +41,7 @@ def add_event():
         flash("Novi događaj je uspješno dodan!", "success")
         return redirect(url_for("auth.admin_dashboard"))
 
-    return render_template("auth.add_event.html")
+    return render_template("add_event.html")
 
 @bp.route("/add_course", methods=["GET", "POST"])
 def add_course():
@@ -61,9 +61,9 @@ def add_course():
         db.session.commit()
 
         flash("Novi tečaj je uspješno dodan!", "success")
-        return redirect(url_for("auth.admin.dashboard"))
+        return redirect(url_for("auth.admin_dashboard"))
 
-    return render_template("auth.add_course.html")
+    return render_template("add_course.html")
 
 @bp.route("/admin/dashboard")
 def admin_dashboard():
@@ -77,7 +77,7 @@ def admin_dashboard():
     sve_poruke = Contact.query.all()
 
     return render_template(
-        "auth.admin_dashboard.html",
+        "admin_dashboard.html",
         tecajevi=sve_tecajevi,
         dogadjaji=svi_dogadjaji,
         poruke=sve_poruke,
@@ -89,7 +89,7 @@ def admin_logout():
     flash("Odjavljeni ste.", "success")
     return redirect(url_for("auth.admin_login"))
 
-@bp.route("/delete_course/<int:course_id>")
+@bp.route("/delete_course/<int:course_id>", methods=["POST"])
 def delete_course(course_id):
     if not session.get("auth.admin_logged"):
         flash("Prijavi se kao admin za pristup ovoj stranici.", "warning")
@@ -107,7 +107,7 @@ def delete_course(course_id):
 
 @bp.route("/edit_course/<int:course_id>", methods=["GET", "POST"])
 def edit_course(course_id): 
-    if not session.get("admin_logged"):
+    if not session.get("auth.admin_logged"):
         flash("Prijavi se kao admin za pristup ovoj stranici.", "warning")
         return redirect(url_for("auth.admin_login"))
 
@@ -119,15 +119,15 @@ def edit_course(course_id):
     if request.method == "POST":
         tecaj.naziv = request.form.get("naziv")
         tecaj.opis = request.form.get("opis")
-
+        tecaj.cijena = request.form.get("cijena")
         db.session.commit()
 
         flash("Tečaj je uspješno ažuriran!", "success")
         return redirect(url_for("auth.admin_dashboard"))
 
-    return render_template("edit_course.html", tecaj=tecaj)
+    return render_template("edit_course.html", course=tecaj)
 
-@bp.route("/register_event/<int:event_id>")
+@bp.route("/register_event/<int:event_id>", methods=["GET", "POST"])
 def register_event(event_id):
     from models import Event
 
@@ -155,4 +155,40 @@ def admin_backup():
 
     # Ovdje bi išla logika za backup baze podataka
     flash("Backup baze podataka je uspješno kreiran!", "success")
+    return redirect(url_for("auth.admin_dashboard"))
+
+@bp.route("/edit_event/<int:id>", methods=["GET", "POST"])
+def edit_event(id):
+    if not session.get("auth.admin_logged"):
+        flash("Prijavi se kao admin.", "warning")
+        return redirect(url_for("auth.admin_login"))
+
+    from extensions import db
+    from models import Event
+
+    event = Event.query.get_or_404(id)
+
+    if request.method == "POST":
+        event.naziv = request.form.get("naziv")
+        event.opis = request.form.get("opis")
+        db.session.commit()
+        flash("Događaj je ažuriran.", "success")
+        return redirect(url_for("public.events"))
+
+    return render_template("edit_event.html", event=event)
+
+@bp.route("/delete_event/<int:id>", methods=["POST"])
+def delete_event(id):
+    if not session.get("auth.admin_logged"):
+        flash("Prijavi se kao admin.", "warning")
+        return redirect(url_for("auth.admin_login"))
+
+    from extensions import db
+    from models import Event
+
+    event = Event.query.get_or_404(id)
+    db.session.delete(event)
+    db.session.commit()
+
+    flash("Događaj je obrisan.", "success")
     return redirect(url_for("auth.admin_dashboard"))
