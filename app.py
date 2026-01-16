@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, app
 from dotenv import load_dotenv
 import os
 
@@ -16,11 +16,11 @@ def create_app():
     app = Flask(__name__)
     app.secret_key = os.getenv("SECRET_KEY", "dev-key")
 
-    app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv(
-        "DATABASE_URL", "sqlite:///versus.db"
-    )
+    app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-
+    app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
+        "pool_pre_ping": True
+    }
     app.config["MAIL_SERVER"] = os.getenv("MAIL_SERVER")
     app.config["MAIL_PORT"] = int(os.getenv("MAIL_PORT", 587))
     app.config["MAIL_USE_TLS"] = os.getenv("MAIL_USE_TLS") == "True"
