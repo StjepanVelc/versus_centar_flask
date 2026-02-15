@@ -52,11 +52,12 @@ def add_course():
     if request.method == "POST":
         naziv = request.form.get("naziv")
         opis = request.form.get("opis")
-
+        cijena = request.form.get("cijena")
+        cijena = float(cijena) if cijena else None
         from extensions import db
         from models import Course
 
-        novi_tecaj = Course(naziv=naziv, opis=opis)
+        novi_tecaj = Course(naziv=naziv, opis=opis, cijena=cijena)
         db.session.add(novi_tecaj)
         db.session.commit()
 
@@ -119,7 +120,8 @@ def edit_course(course_id):
     if request.method == "POST":
         tecaj.naziv = request.form.get("naziv")
         tecaj.opis = request.form.get("opis")
-        tecaj.cijena = request.form.get("cijena")
+        cijena = request.form.get("cijena")
+        tecaj.cijena = float(cijena) if cijena else None
         db.session.commit()
 
         flash("Tečaj je uspješno ažuriran!", "success")
@@ -171,6 +173,8 @@ def edit_event(id):
     if request.method == "POST":
         event.naziv = request.form.get("naziv")
         event.opis = request.form.get("opis")
+        cijena = request.form.get("cijena")
+        event.cijena = float(cijena) if cijena else None    
         db.session.commit()
         flash("Događaj je ažuriran.", "success")
         return redirect(url_for("public.events"))
