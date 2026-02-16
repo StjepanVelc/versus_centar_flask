@@ -1,6 +1,6 @@
-from flask import Flask
 from dotenv import load_dotenv
 import os
+from flask import Flask, request
 
 from extensions import db, mail
 from models import *
@@ -14,6 +14,7 @@ def create_app():
     load_dotenv()
 
     app = Flask(__name__)
+    app.config["MAINTENANCE_MODE"] = True
     app.secret_key = os.getenv("SECRET_KEY", "dev-key")
 
     database_url = os.environ.get("DATABASE_URL")
@@ -35,9 +36,25 @@ def create_app():
     db.init_app(app)
     mail.init_app(app)
 
+    @app.before_request
+    def check_for_maintenance():
+        if app.config.get("MAINTENANCE_MODE"):
+        # Dozvoli statičke fajlove i admin login ako želiš
+            if request.endpoint and (
+            request.endpoint.startswith("static")
+            or request.endpoint == "auth.admin_login"
+            ):
+                return
+
+            return (
+            "Stranica je trenutno u tehničkoj nadogradnji. Molimo pokušajte kasnije.",
+            503
+            )
+            
     app.register_blueprint(public_bp)
     app.register_blueprint(auth_bp)
     
+
 
     with app.app_context():
         db.create_all()
