@@ -4,7 +4,7 @@ from flask import Flask, request
 
 from extensions import db, mail
 from models import *
-
+from flask import render_template
 from routes.public import bp as public_bp
 from routes.auth import bp as auth_bp
 
@@ -39,17 +39,14 @@ def create_app():
     @app.before_request
     def check_for_maintenance():
         if app.config.get("MAINTENANCE_MODE"):
-        # Dozvoli statičke fajlove i admin login ako želiš
+        # Dozvoli statičke fajlove i admin login da ostanu dostupni
             if request.endpoint and (
             request.endpoint.startswith("static")
             or request.endpoint == "auth.admin_login"
             ):
                 return
 
-            return (
-            "Stranica je trenutno u tehničkoj nadogradnji. Molimo pokušajte kasnije.",
-            503
-            )
+            return render_template("maintenance.html"), 503
             
     app.register_blueprint(public_bp)
     app.register_blueprint(auth_bp)
@@ -65,3 +62,4 @@ app = create_app()
 
 if __name__ == "__main__":
     app.run(debug=os.getenv("FLASK_ENV") == "development")
+

@@ -2,6 +2,10 @@
 import os
 import shutil
 from datetime import datetime
+from functools import wraps
+from flask import session, redirect, url_for, flash
+from models import User
+from extensions import db
 
 def auto_backup():
     """
@@ -30,3 +34,17 @@ def auto_backup():
 
     except Exception as e:
         print(f"⚠️ Greška u backupu: {e}")
+
+def admin_required(f):
+    @wraps(f)
+    def wrapper(*args, **kwargs):
+        user_id = session.get("user_id")
+        user = db.session.get(User, user_id)
+
+        if not user or user.role != "admin":
+            flash("Nemate pristup ovoj stranici.", "warning")
+            return redirect(url_for("auth.admin_login"))
+
+        return f(*args, **kwargs)
+
+    return wrapper
