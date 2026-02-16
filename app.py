@@ -10,6 +10,7 @@ from extensions import csrf
 import logging
 from logging.handlers import RotatingFileHandler
 from extensions import db, mail, csrf, limiter
+from extensions import migrate
 
 def create_app():
     
@@ -34,7 +35,8 @@ def create_app():
     db.init_app(app)
     csrf.init_app(app)
     mail.init_app(app)
-
+    migrate.init_app(app, db)
+    
     @app.before_request
     def check_for_maintenance():
         if app.config.get("MAINTENANCE_MODE"):
@@ -49,9 +51,6 @@ def create_app():
             
     app.register_blueprint(public_bp)
     app.register_blueprint(auth_bp)
-    
-    with app.app_context():
-        db.create_all()
 
     limiter.init_app(app)
     return app
