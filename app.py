@@ -7,12 +7,13 @@ from models import *
 from flask import render_template
 from routes.public import bp as public_bp
 from routes.auth import bp as auth_bp
-
-
+from extensions import csrf
+import logging
+from logging.handlers import RotatingFileHandler
+from extensions import db, mail, csrf, limiter
 
 def create_app():
     load_dotenv()
-
     app = Flask(__name__)
     app.config["MAINTENANCE_MODE"] = True
     app.secret_key = os.getenv("SECRET_KEY", "dev-key")
@@ -34,6 +35,7 @@ def create_app():
     app.config["MAIL_DEFAULT_SENDER"] = os.getenv("MAIL_DEFAULT_SENDER")
 
     db.init_app(app)
+    csrf.init_app(app)
     mail.init_app(app)
 
     @app.before_request
@@ -51,15 +53,19 @@ def create_app():
     app.register_blueprint(public_bp)
     app.register_blueprint(auth_bp)
     
-
-
     with app.app_context():
         db.create_all()
 
+    limiter.init_app(app)
     return app
 
 app = create_app()
 
+if not app.debug:
+    handler = RotatingFileHandler("error.log", maxBytes=1000000, backupCount=3)
+    handler.setLevel(logging.ERROR)
+    app.logger.addHandler(handler)
+    
 if __name__ == "__main__":
     app.run(debug=os.getenv("FLASK_ENV") == "development")
 

@@ -4,8 +4,11 @@ from models import User
 from extensions import db
 from utils import admin_required
 from models import Course, Event, Contact
+from extensions import limiter
 
 bp = Blueprint("auth", __name__)
+
+@limiter.limit("5 per minute")
 @bp.route("/admin/login", methods=["GET", "POST"])
 def admin_login():
     if request.method == "POST":
