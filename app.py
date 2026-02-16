@@ -1,6 +1,7 @@
 from dotenv import load_dotenv
 import os
 from flask import Flask, request
+from flask.cli import F
 
 from extensions import db, mail
 from models import *
@@ -59,7 +60,9 @@ def create_app():
     limiter.init_app(app)
     return app
 
+
 app = create_app()
+
 
 if not app.debug:
     handler = RotatingFileHandler("error.log", maxBytes=1000000, backupCount=3)

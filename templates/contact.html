@@ -7,7 +7,7 @@
         <h3 class="card-title mb-4 text-center text-primary">Pošaljite nam poruku</h3>
 
         <form method="POST">
-            {{ csrf_token() }}
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <div class="mb-3">
                 <label class="form-label fw-semibold">Ime i prezime</label>
                 <input type="text" name="ime" class="form-control" placeholder="Unesite vaše ime" required>
