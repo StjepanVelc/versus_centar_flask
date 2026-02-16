@@ -176,6 +176,10 @@ def create_admin():
         flash("Korisnik već postoji.", "warning")
         return redirect(url_for("auth.admin_dashboard"))
 
+    if len(password) < 8:
+        flash("Lozinka mora imati najmanje 8 znakova.", "warning")
+        return redirect(url_for("auth.admin_dashboard"))
+
     new_admin = User(username=username, role="admin")
     new_admin.set_password(password)
     db.session.add(new_admin)
@@ -184,3 +188,34 @@ def create_admin():
     flash("Novi admin uspješno kreiran.", "success")
     return redirect(url_for("auth.admin_dashboard"))
 
+@bp.route("/admin/change-password", methods=["GET", "POST"])
+@admin_required
+@limiter.limit("5 per minute")
+def change_password():
+
+    user = db.session.get(User, session.get("user_id"))
+
+    if request.method == "POST":
+        old_password = request.form.get("old_password")
+        new_password = request.form.get("new_password")
+        confirm_password = request.form.get("confirm_password")
+
+        if not user.check_password(old_password):
+            flash("Stara lozinka nije točna.", "danger")
+            return redirect(url_for("auth.change_password"))
+
+        if len(new_password) < 8:
+            flash("Nova lozinka mora imati najmanje 8 znakova.", "warning")
+            return redirect(url_for("auth.change_password"))
+
+        if new_password != confirm_password:
+            flash("Lozinke se ne podudaraju.", "warning")
+            return redirect(url_for("auth.change_password"))
+
+        user.set_password(new_password)
+        db.session.commit()
+
+        flash("Lozinka promijenjena.", "success")
+        return redirect(url_for("auth.admin_dashboard"))
+
+    return render_template("change_password.html")

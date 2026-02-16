@@ -13,6 +13,7 @@ class Event(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     naziv = db.Column(db.String(150), nullable=False)
     opis = db.Column(db.Text)
+    cijena = db.Column(db.Float)
 
 class Contact(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -33,7 +34,7 @@ class User(db.Model):
     __tablename__ = "user"
 
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), unique=True, nullable=False)
+    username = db.Column(db.String(80), unique=True, nullable=False, index=True)
     password_hash = db.Column(db.String(255), nullable=False)
     role = db.Column(db.String(20), default="user")
 

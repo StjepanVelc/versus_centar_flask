@@ -1,9 +1,7 @@
 from dotenv import load_dotenv
 import os
 from flask import Flask, request
-from flask.cli import F
-
-from extensions import db, mail
+from flask.cli import with_appcontext
 from models import *
 from flask import render_template
 from routes.public import bp as public_bp
@@ -14,20 +12,18 @@ from logging.handlers import RotatingFileHandler
 from extensions import db, mail, csrf, limiter
 
 def create_app():
-    load_dotenv()
+    
+    if os.getenv("FLASK_ENV") != "production":
+        load_dotenv()
     app = Flask(__name__)
-    app.config["MAINTENANCE_MODE"] = True
-    app.secret_key = os.getenv("SECRET_KEY", "dev-key")
+    config_type = os.getenv("FLASK_ENV", "development")
 
-    database_url = os.environ.get("DATABASE_URL")
-
-    if database_url.startswith("postgres://"):
-        database_url = database_url.replace("postgres://", "postgresql+psycopg://", 1)
-    elif database_url.startswith("postgresql://"):
-        database_url = database_url.replace("postgresql://", "postgresql+psycopg://", 1)
-
-    app.config["SQLALCHEMY_DATABASE_URI"] = database_url
-
+    if config_type == "production":
+        app.config.from_object("config.ProductionConfig")
+    else:
+        app.config.from_object("config.DevelopmentConfig")
+    
+    
     app.config["MAIL_SERVER"] = os.getenv("MAIL_SERVER")
     app.config["MAIL_PORT"] = int(os.getenv("MAIL_PORT", 587))
     app.config["MAIL_USE_TLS"] = os.getenv("MAIL_USE_TLS") == "True"
