@@ -69,3 +69,6 @@ PostgreSQL with version-controlled migrations using Flask-Migrate.
 ## Author
 
 Stjepan Velc
+
+This project demonstrates a Flask web application with authentication and admin dashboard.
+The live deployment has been disabled, but the full source code is available.

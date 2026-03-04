@@ -134,6 +134,7 @@ def admin_messages():
 def admin_backup():
     
     # Ovdje bi išla logika za backup baze podataka
+    
     flash("Backup baze podataka je uspješno kreiran!", "success")
     return redirect(url_for("auth.admin_dashboard"))
 

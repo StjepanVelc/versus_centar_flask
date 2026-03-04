@@ -47,15 +47,15 @@ def contact():
             subject="📩 Nova poruka s kontakt forme",
             recipients=["versus.centar@gmail.com"],  # admin mail
             body=f"""
-Nova poruka s web stranice Versus Centar
+            Nova poruka s web stranice Versus Centar
 
-Ime: {ime}
-Email: {email}
+            Ime: {ime}
+            Email: {email}
 
-Poruka:
-{poruka}
-"""
-        )
+            Poruka:
+            {poruka}
+            """,
+            )
         mail.send(msg)
 
         flash("Poruka je uspješno poslana. Hvala!", "success")
